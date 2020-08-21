@@ -33,7 +33,12 @@ if (isset($code)) {
 } else {
     // check whether an error occurred
     if (isset($_GET['error'])) {
-        echo 'An error occurred: ' . $_GET['error_description'];
+
+        // Restrict error mesage to 100 chars and remove any special chars to avoid XSS
+        $errorDescription = substr($_GET['error_description'], 0, 100);
+        $errorDescription = preg_replace("/[^a-zA-Z0-9\s]/", "", $errorDescription);
+
+        echo 'An error occurred: ' . $errorDescription;
     }
 }
 
